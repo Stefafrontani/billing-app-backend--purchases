@@ -6,7 +6,7 @@
   "scripts": {
     "create-user": "cd C:/Program Files/PostgreSQL/13/bin && createuser -U postgres -s billinguser",
     "change-password": "psql -U postgres -d template1 -c \"ALTER ROLE billinguser WITH PASSWORD 'password';\"",
-    "create-db": "cd C:/Program Files/PostgreSQL/13/bin && createdb -U billinguser -p 5432 billingdb",
+    "create-db": "cd C:/Program Files/PostgreSQL/13/bin && createdb -U billinguser -p 5432 purchasesdb",
     "create-migration": "node-pg-migrate create",
     "migrate-up": "node-pg-migrate --envPath src/database/.env up",
     "migrate-down": "node-pg-migrate --envPath src/database/.env down",

@@ -11,45 +11,45 @@ const pool = new Pool({
   database: process.env.POSTGRES_DB
 })
 
-const getExpenditures = async (req, res) => {
-  console.log('getExpenditures')
-  const response = await pool.query('SELECT * FROM expenditures');
+const getPurchases = async (req, res) => {
+  console.log('getPurchases')
+  const response = await pool.query('SELECT * FROM purchases');
   res.status(200).send(response.rows)
 }
 
-const getExpenditureById = async (req, res) => {
-  console.log('getExpenditureById')
-  const expenditureId = req.params.id;
-  const response = await pool.query('SELECT * FROM expenditures WHERE id = $1', [expenditureId])
+const getPurchaseById = async (req, res) => {
+  console.log('getPurchaseById')
+  const purchaseId = req.params.id;
+  const response = await pool.query('SELECT * FROM purchases WHERE id = $1', [purchaseId])
   res.status(200).json(response.rows)
 }
 
-const createExpenditure = async (req, res) => {
-  console.log('createExpenditure')
+const createPurchase = async (req, res) => {
+  console.log('createPurchase')
   const { name, email } = req.body;
-  const response = await pool.query('INSERT INTO expenditures (name, email) VALUES ($1, $2)', [name, email])
+  const response = await pool.query('INSERT INTO purchases (name, email) VALUES ($1, $2)', [name, email])
   res.status(200).json(response.rows)
 }
   
-const updateExpenditure = async (req, res) => {
-  console.log('updateExpenditure')
-  const expenditureId = req.params.id;
+const updatePurchase = async (req, res) => {
+  console.log('updatePurchase')
+  const purchaseId = req.params.id;
   const { name, email } = req.body;
-  const response = await pool.query('UPDATE expenditures SET name = $1, email = $2 WHERE id = $3', [name, email, expenditureId])
+  const response = await pool.query('UPDATE purchases SET name = $1, email = $2 WHERE id = $3', [name, email, purchaseId])
   res.status(200).json(response.rows)
 }
 
-const deleteExpenditure = async (req, res) => {
-  console.log('deleteExpenditure')
-  const expenditureId = req.params.id;
-  const response = await pool.query('DELETE FROM expenditures WHERE id = $1', [expenditureId])
+const deletePurchase = async (req, res) => {
+  console.log('deletePurchase')
+  const purchaseId = req.params.id;
+  const response = await pool.query('DELETE FROM purchases WHERE id = $1', [purchaseId])
   res.status(200).json(response.rows)
 }
 
 module.exports = {
-  getExpenditures,
-  getExpenditureById,
-  createExpenditure,
-  deleteExpenditure,
-  updateExpenditure
+  getPurchases,
+  getPurchaseById,
+  createPurchase,
+  deletePurchase,
+  updatePurchase
 }
