@@ -22,6 +22,20 @@ const getTotalPurchasesAmount = async (req, res) => {
   }
 }
 
+const getPurchaseById = async (req, res) => {
+  console.log('getPurchaseById')
+  const purchaseId = req.params.purchaseId;
+  try {
+    const response = await pool.query('SELECT * FROM purchases WHERE id = $1', [purchaseId])
+    const purchaseFound = response.rows[0]
+    res.status(200).send(purchaseFound)
+  } catch(e) {
+    console.log(`Could not find a purchase with id ${purchaseId}`)
+    throw new Error(`No purchase with id ${purchaseId} found`);
+  }
+}
+
 module.exports = {
+  getPurchaseById,
   getTotalPurchasesAmount
 }
