@@ -11,45 +11,17 @@ const pool = new Pool({
   database: process.env.POSTGRES_DB
 })
 
-const getPurchases = async (req, res) => {
-  console.log('getPurchases')
-  const response = await pool.query('SELECT * FROM purchases');
-  res.status(200).send(response.rows)
-}
-
-const getPurchaseById = async (req, res) => {
-  console.log('getPurchaseById')
-  const purchaseId = req.params.id;
-  const response = await pool.query('SELECT * FROM purchases WHERE id = $1', [purchaseId])
-  res.status(200).json(response.rows)
-}
-
-const createPurchase = async (req, res) => {
-  console.log('createPurchase')
-  const { name, email } = req.body;
-  const response = await pool.query('INSERT INTO purchases (name, email) VALUES ($1, $2)', [name, email])
-  res.status(200).json(response.rows)
-}
-  
-const updatePurchase = async (req, res) => {
-  console.log('updatePurchase')
-  const purchaseId = req.params.id;
-  const { name, email } = req.body;
-  const response = await pool.query('UPDATE purchases SET name = $1, email = $2 WHERE id = $3', [name, email, purchaseId])
-  res.status(200).json(response.rows)
-}
-
-const deletePurchase = async (req, res) => {
-  console.log('deletePurchase')
-  const purchaseId = req.params.id;
-  const response = await pool.query('DELETE FROM purchases WHERE id = $1', [purchaseId])
-  res.status(200).json(response.rows)
+const getTotalPurchasesAmount = async (req, res) => {
+  console.log('getTotalDebt')
+  try {
+    const response = await pool.query('SELECT SUM (amount) AS total FROM purchases;');
+    res.status(200).send({ totalDebt: response.rows[0].total })
+  } catch(e) {
+    console.log('could not sum total debts amount')
+    throw new Error('No sum');
+  }
 }
 
 module.exports = {
-  getPurchases,
-  getPurchaseById,
-  createPurchase,
-  deletePurchase,
-  updatePurchase
+  getTotalPurchasesAmount
 }
